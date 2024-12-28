@@ -129,10 +129,12 @@ class Block(nn.Module):
         self.ffwd = FeedFoward(n_embd)
         self.ln1 = nn.LayerNorm(n_embd)
         self.ln2 = nn.LayerNorm(n_embd)
+        self.dropout1 = nn.Dropout(dropout)
+        self.dropout2 = nn.Dropout(dropout)
 
     def forward(self, x):
-        x = x + self.sa(self.ln1(x))
-        x = x + self.ffwd(self.ln2(x))
+        x = x + self.dropout1(self.sa(self.ln1(x)))
+        x = x + self.dropout2(self.ffwd(self.ln2(x)))
         return x
 
 class GPTLanguageModel(nn.Module):
